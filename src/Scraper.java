@@ -9,25 +9,44 @@ import java.io.*; // Only needed if scraping a local File.
 
 public class Scraper {
 
-
-	public Scraper() {
+	/***
+	 * 
+	 * Connects to a certain single page and takes information from it
+	 * 
+	 * I want to call this method several times with a different URL each time
+	 *  - First link will be known, subsequent links can be found as a certain element on the page that will always be the same
+	 * 
+	 * Connect to current page, scrape all body text, scrape link to next chapter
+	 * Create a class to pass both back together
+	 * 
+	 */
+	
+	public Scraper(String link) {
 
 		Document doc = null;
 
 		try {
-			doc = Jsoup.connect("http://www.geog.leeds.ac.uk/courses/other/programming/practicals/general/web/scraping-intro/table.html").get();
+			doc = Jsoup.connect(link).get();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
-		Element table = doc.getElementById("datatable");
-		Elements rows = table.getElementsByTag("TR");
+		//Get title
+		Elements title = doc.select(".entry-header > .entry-title");
 		
-		for (Element row : rows) {
-			Elements tds = row.getElementsByTag("TD");
-			for (int i = 0; i < tds.size(); i++) {
-				if (i == 1) System.out.println(tds.get(i).text());
-			}
-		}
+		//Convert title to string, print to test
+		String t = title.text();
+		System.out.println("Got title: " + t + "\n \n");
+		
+		// Get chapter content, print to test
+		Elements content = doc.select(".entry-content p").not("a[title=Last Chapter]").not("a[title=Next Chapter]");
+		String cont = content.text();
+		System.out.println(cont);
+		
+		// Get next chapter link
+		Elements next = doc.select("#content > #nav-single > .nav-next a[href]");
+		String nxt = next.attr("abs:href");
+		System.out.println("\n \n" + nxt);
+		
 	}
 }
 	

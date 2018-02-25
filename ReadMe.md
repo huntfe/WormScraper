@@ -2,6 +2,8 @@
 
 This is a scraper that will take the text of the web-serial Worm by Wildbow from https://parahumans.wordpress.com and consolidate it in an e pub format, or something. I haven't thought this through very much.
 
+I am using Jsoup to scrape the site, https://jsoup.org/
+
 ## TODO:
 
 ### Structure of Program
