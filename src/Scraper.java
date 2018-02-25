@@ -1,5 +1,4 @@
 
-
 import org.jsoup.*;
 import org.jsoup.helper.*;
 import org.jsoup.nodes.*;
@@ -8,6 +7,9 @@ import org.jsoup.select.*;
 import java.io.*; // Only needed if scraping a local File.
 
 public class Scraper {
+	public Scraper(){
+		
+	}
 
 	/***
 	 * 
@@ -21,7 +23,7 @@ public class Scraper {
 	 * 
 	 */
 	
-	public Scraper(String link) {
+	public ContentAndLink Scraper(String link) {
 
 		Document doc = null;
 
@@ -34,19 +36,17 @@ public class Scraper {
 		Elements title = doc.select(".entry-header > .entry-title");
 		
 		//Convert title to string, print to test
-		String t = title.text();
-		System.out.println("Got title: " + t + "\n \n");
+		String tStr = title.text();
 		
 		// Get chapter content, print to test
-		Elements content = doc.select(".entry-content p").not("a[title=Last Chapter]").not("a[title=Next Chapter]");
-		String cont = content.text();
-		System.out.println(cont);
+		Elements content = doc.select(".entry-content p").not("a");
 		
 		// Get next chapter link
 		Elements next = doc.select("#content > #nav-single > .nav-next a[href]");
 		String nxt = next.attr("abs:href");
-		System.out.println("\n \n" + nxt);
 		
+		
+		return new ContentAndLink(tStr, content, nxt);
 	}
 }
 	
